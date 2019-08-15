@@ -1,33 +1,36 @@
 {
-  "name": "shadow-dom-crawler",
-  "version": "1.0.0",
-  "description": "A zero-dependency script for crawling deeply nested shadow DOMs",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "files": [
-    "dist/"
-  ],
-  "scripts": {
-    "clean": "rm -rf ./dist",
-    "prebuild": "npm run clean",
-    "build": "tsc --project ./tsconfig-build.json",
-    "lint": "tslint --project ./tsconfig-build.json",
-    "prepare": "npm run build",
-    "prepublishOnly": "npm test && npm run lint",
-    "preversion": "npm run lint",
-    "version": "git add .",
-    "postversion": "git push && git push --tags",
-    "test": "jest"
-  },
-  "devDependencies": {
-    "@stencil/core": "^1.0.7",
-    "@types/jest": "^24.0.17",
-    "jest": "^24.8.0",
-    "prettier": "^1.18.2",
-    "tslint": "^5.18.0",
-    "tslint-config-prettier": "^1.18.0",
-    "tslint-plugin-prettier": "^2.0.1",
-    "typescript": "^3.5.3"
-  },
-  "license": "MIT"
+	"name": "shadow-dom-crawler",
+	"version": "1.0.0",
+	"description": "A zero-dependency script for crawling deeply nested shadow DOMs",
+	"main": "dist/index.js",
+	"types": "dist/index.d.ts",
+	"files": [
+		"dist/"
+	],
+	"scripts": {
+		"clean": "rm -rf ./dist",
+		"prebuild": "npm run clean",
+		"build": "tsc --project ./tsconfig-build.json",
+		"lint": "tslint --project ./tsconfig-build.json",
+		"prepare": "npm run build",
+		"prepublishOnly": "npm test && npm run lint",
+		"preversion": "npm run lint",
+		"version": "git add .",
+		"postversion": "git push && git push --tags",
+		"test": "jest"
+	},
+	"devDependencies": {
+		"@stencil/core": "^1.0.7",
+		"@types/jest": "^24.0.17",
+		"jest": "^24.8.0",
+		"prettier": "^1.18.2",
+		"tslint": "^5.18.0",
+		"tslint-config-prettier": "^1.18.0",
+		"tslint-plugin-prettier": "^2.0.1",
+		"typescript": "^3.5.3"
+	},
+	"license": "MIT",
+	"homepage": "https://github.com/DesignByOnyx/shadow-dom-crawler",
+	"repository": "https://github.com/DesignByOnyx/shadow-dom-crawler.git",
+	"author": "Ryan Wheale"
 }
