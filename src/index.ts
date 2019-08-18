@@ -1,4 +1,12 @@
-import { REG_COMBINATOR, REG_SKIP_TAG, getNextSegment, getChildNodes, findSpecial, getDescendantShadows } from './util';
+import {
+	Combinator,
+	REG_COMBINATOR,
+	REG_SKIP_TAG,
+	getNextSegment,
+	getChildNodes,
+	findSpecial,
+	getDescendantShadows,
+} from './util';
 
 const slice = Array.prototype.slice;
 
@@ -23,7 +31,7 @@ const findNode = (selector: string, start: Node | Node[] | NodeList = document.b
 			throw new Error(`'${selector}' is not a valid selector.`);
 		}
 
-		const combinator = segment;
+		const combinator = segment as Combinator;
 		const nextSegment = getNextSegment(selector.substr(segment.length));
 		found = findSpecial(combinator, nextSegment, start);
 	} else {

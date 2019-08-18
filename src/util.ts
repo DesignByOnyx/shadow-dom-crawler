@@ -1,3 +1,5 @@
+type Combinator = '>' | '~' | '+';
+
 /**
  * Special characters in CSS. These do not require spaces on either side!
  */
@@ -91,7 +93,7 @@ function getChildNodes(el: HTMLElement | HTMLSlotElement) {
 	} else if (el.shadowRoot) {
 		// The order here is important as it puts the light dom first
 		// Maybe we provide an option to put shadow dom first?
-		children = [].concat(Array.from(el.childNodes), Array.from(el.shadowRoot.childNodes));
+		children = Array.from(el.childNodes).concat(Array.from(el.shadowRoot.childNodes));
 	} else {
 		children = Array.from(el.childNodes);
 	}
@@ -99,7 +101,14 @@ function getChildNodes(el: HTMLElement | HTMLSlotElement) {
 	return children.filter(c => c.nodeType === 1) as HTMLElement[];
 }
 
-function findSpecial(combinator: string, selector: string, start: Node[]) {
+/**
+ * Searches for a matching element based on the combinator-selector values.
+ *
+ * @param combinator A CSS combinator
+ * @param selector A simple CSS selector
+ * @param start The nodes from which to start crawling
+ */
+function findSpecial(combinator: Combinator, selector: string, start: Node[]) {
 	let found: HTMLElement | null = null;
 
 	switch (combinator) {
@@ -165,6 +174,7 @@ function getDescendantShadows(el: HTMLElement) {
 }
 
 export {
+	Combinator,
 	REG_COMBINATOR,
 	REG_SKIP_TAG,
 	splitSelector,
