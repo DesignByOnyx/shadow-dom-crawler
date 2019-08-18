@@ -8,7 +8,7 @@ yarn add shadow-dom-crawler
 
 ## API
 
-### `findNode(selector: string, startNode?: Node | Node[] | NodeList)`
+#### `findNode(selector: string, startNode?: Node | Node[] | NodeList)`
 
 This method is analagous to [`Element.prototype.querySelector`](https://developer.mozilla.org/en-US/docs/Web/API/Element/querySelector), but works with open shadow DOMs.
 

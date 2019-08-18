@@ -1,6 +1,5 @@
-import { REG_COMBINATOR, getNextSegment, getChildNodes } from './util';
+import { REG_COMBINATOR, REG_SKIP_TAG, getNextSegment, getChildNodes, findSpecial, getDescendantShadows } from './util';
 
-const REG_SKIP_TAG = /^(?:STYLE|SCRIPT)$/;
 const slice = Array.prototype.slice;
 
 /**
@@ -39,6 +38,13 @@ const findNode = (selector: string, start: Node | Node[] | NodeList = document.b
 	return found;
 };
 
+/**
+ * Finds the first element which matches the selector within the node list.
+ * This only works with simple CSS slectors with no descendants or combinators.
+ *
+ * @param selector A valid css selector
+ * @param start The nodes from where to start crawling
+ */
 function findFirstMatch(selector: string, start: Node[]) {
 	let found: HTMLElement | null = null;
 
@@ -52,59 +58,14 @@ function findFirstMatch(selector: string, start: Node[]) {
 			} else {
 				found = el.matches(selector) ? el : el.querySelector(selector);
 
-				// TODO: this can be way more efficient if at this point we filter only descendants
-				// which have a shadowRoot and continue crawling from there. We should wrap this up
-				// in a method too as that could be useful for people (findShadowChildren).
-
 				if (!found) {
-					found = findNode(selector, getChildNodes(el));
+					found = findNode(selector, el.shadowRoot ? getChildNodes(el) : getDescendantShadows(el));
 				}
 			}
 		}
 
 		return !!found;
 	});
-
-	return found;
-}
-
-function findSpecial(combinator: string, selector: string, start: Node[]) {
-	let found: HTMLElement | null = null;
-
-	switch (combinator) {
-		case '>':
-			start.some((el: HTMLElement) => {
-				found = getChildNodes(el).find((child: HTMLElement) => child.matches(selector));
-
-				return !!found;
-			});
-			break;
-
-		case '+':
-			start.some((el: HTMLElement) => {
-				if (el.nextElementSibling.matches(selector)) {
-					found = el.nextElementSibling as HTMLElement;
-				}
-
-				return !!found;
-			});
-			break;
-
-		case '~':
-			start.some((el: HTMLElement) => {
-				let sibling = el;
-				// tslint:disable-next-line: no-conditional-assignment
-				while ((sibling = sibling.nextElementSibling as HTMLElement)) {
-					if (sibling.matches(selector)) {
-						found = sibling;
-						break;
-					}
-				}
-
-				return !!found;
-			});
-			break;
-	}
 
 	return found;
 }

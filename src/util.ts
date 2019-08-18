@@ -4,6 +4,11 @@
 const REG_COMBINATOR = /^(?:\s|~|\+|>)$/;
 
 /**
+ * List of tags to skip when crawling.
+ */
+const REG_SKIP_TAG = /^(?:STYLE|SCRIPT|IFRAME)$/;
+
+/**
  * Dictionary of characters between which spaces
  * should be considered part of the selector.
  */
@@ -94,4 +99,77 @@ function getChildNodes(el: HTMLElement | HTMLSlotElement) {
 	return children.filter(c => c.nodeType === 1) as HTMLElement[];
 }
 
-export { REG_COMBINATOR, splitSelector, getNextSegment, getChildNodes };
+function findSpecial(combinator: string, selector: string, start: Node[]) {
+	let found: HTMLElement | null = null;
+
+	switch (combinator) {
+		case '>':
+			start.some((el: HTMLElement) => {
+				found = getChildNodes(el).find((child: HTMLElement) => child.matches(selector));
+
+				return !!found;
+			});
+			break;
+
+		case '+':
+			start.some((el: HTMLElement) => {
+				if (el.nextElementSibling.matches(selector)) {
+					found = el.nextElementSibling as HTMLElement;
+				}
+
+				return !!found;
+			});
+			break;
+
+		case '~':
+			start.some((el: HTMLElement) => {
+				let sibling = el;
+				// tslint:disable-next-line: no-conditional-assignment
+				while ((sibling = sibling.nextElementSibling as HTMLElement)) {
+					if (sibling.matches(selector)) {
+						found = sibling;
+						break;
+					}
+				}
+
+				return !!found;
+			});
+			break;
+	}
+
+	return found;
+}
+
+/**
+ * Finds all descendant shadow roots for an element. This is used to reduce
+ * redundant calls to `querySelector` on children which have already been searched.
+ * However, I'm not entirely sure this is actually faster. Needs more testing.
+ *
+ * @param el The parent element
+ */
+function getDescendantShadows(el: HTMLElement) {
+	const shadows: HTMLElement[] = [];
+
+	getChildNodes(el).forEach(child => {
+		if (child.shadowRoot) {
+			return shadows.push.apply(shadows, getChildNodes(el));
+		}
+
+		const deep = getDescendantShadows(child);
+		if (deep && deep.length) {
+			shadows.push.apply(shadows, deep);
+		}
+	});
+
+	return shadows;
+}
+
+export {
+	REG_COMBINATOR,
+	REG_SKIP_TAG,
+	splitSelector,
+	getNextSegment,
+	getChildNodes,
+	findSpecial,
+	getDescendantShadows,
+};
