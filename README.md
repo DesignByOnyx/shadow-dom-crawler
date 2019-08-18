@@ -1,8 +1,9 @@
 # Shadow DOM Crawler
 
-This is a zero-dependency script for crawling a deeply nested shadow DOMs. This can only crawl shadow structures created with `{ mode: 'open' }` because "closed" structures are inaccessable to JavaScript.
+This is a zero-dependency script for crawling deeply nested shadow DOMs. This can only crawl shadow structures created with `{ mode: 'open' }` because "closed" structures are inaccessable to JavaScript.
 
 ```bash
+npm install shadow-dom-crawler
 yarn add shadow-dom-crawler
 ```
 
