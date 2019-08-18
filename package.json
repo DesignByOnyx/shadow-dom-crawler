@@ -32,5 +32,8 @@
 	"license": "MIT",
 	"homepage": "https://github.com/DesignByOnyx/shadow-dom-crawler",
 	"repository": "https://github.com/DesignByOnyx/shadow-dom-crawler.git",
-	"author": "Ryan Wheale"
+	"author": "Ryan Wheale",
+	"dependencies": {
+		"shadow-dom-inject-styles": "^1.0.2"
+	}
 }
