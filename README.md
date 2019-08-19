@@ -16,7 +16,7 @@ This library was developed for a very limited set of use cases and **should NOT 
   - https://www.w3.org/TR/wai-aria-practices/examples/dialog-modal/dialog.html
 - inject shared styles inside of components to reduce duplicity and bundle sizes
   - NOTE: this is a controversial use case. Components should ship with everything they need to work. However, when building an application I believe it's both ethical and sane to allow a grandmother component inject a set of shared utility styles into known grandchild components.
-- if you have other use cases, please [file an issue](./issues) so I can list them here.
+- if you have other use cases, please [file an issue](https://github.com/DesignByOnyx/shadow-dom-crawler/issues) so I can list them here.
 
 ### What NOT to do
 
