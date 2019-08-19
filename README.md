@@ -7,6 +7,24 @@ npm install shadow-dom-crawler
 yarn add shadow-dom-crawler
 ```
 
+## Use cases
+
+This library was developed for a very limited set of use cases and **should NOT be used to violate the intentions of component developers**. Please remember that components use a shadow DOM in order to isolate themselves from the outside world. DO NOT interfere with, modify, or otherwise disrupt the DOMs in 3rd party components. With that said, here are some of the reasons why I built this script:
+
+- bring focus to a particular element within a modal/popover for ARIA compliance
+  - https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/dialog_role
+  - https://www.w3.org/TR/wai-aria-practices/examples/dialog-modal/dialog.html
+- inject shared styles inside of components to reduce duplicity and bundle sizes
+  - NOTE: this is a controversial use case. Components should ship with everything they need to work. However, when building an application I believe it's both ethical and sane to allow a grandmother component inject a set of shared utility styles into known grandchild components.
+- if you have other use cases, please [file an issue](./issues) so I can list them here.
+
+### What NOT to do
+
+- modify the DOM inside a shadow root
+- share any type of application state between components
+- set properties or attributes on nested components
+- pretty much anything else which is not listed in the use cases above... seriously, don't do it.
+
 ## API
 
 #### `findNode(selector: string, startNode?: Node | Node[] | NodeList)`
@@ -21,7 +39,7 @@ import { findNode } from 'shadow-dom-crawler';
 const node = findNode('.some-valid-css-selector');
 
 const root = document.getElementById('#root');
-const node = findNode('.some .other .css-selector', root);
+const node = findNode('.some .nested .css-selector', root);
 
 const items = document.querySelector('li.items');
 const node = findNode('.some complex-css[ selector ]', items);
