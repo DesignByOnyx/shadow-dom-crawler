@@ -85,12 +85,12 @@ function getNextSegment(selector: string) {
  *
  * @param el Parent element
  */
-function getChildNodes(el: HTMLElement | HTMLSlotElement) {
+function getChildNodes(el: HTMLElement | HTMLSlotElement | ShadowRoot) {
 	let children: Node[];
 
 	if ('assignedNodes' in el) {
 		children = el.assignedNodes();
-	} else if (el.shadowRoot) {
+	} else if ('shadowRoot' in el && el.shadowRoot) {
 		// The order here is important as it puts the light dom first
 		// Maybe we provide an option to put shadow dom first?
 		children = Array.from(el.childNodes).concat(Array.from(el.shadowRoot.childNodes));
@@ -156,15 +156,15 @@ function findSpecial(combinator: Combinator, selector: string, start: Node[]) {
  *
  * @param el The parent element
  */
-function getDescendantShadows(el: HTMLElement) {
+function getDescendantShadowChildren(el: HTMLElement) {
 	const shadows: HTMLElement[] = [];
 
 	getChildNodes(el).forEach(child => {
 		if (child.shadowRoot) {
-			return shadows.push.apply(shadows, getChildNodes(el));
+			return shadows.push.apply(shadows, getChildNodes(child.shadowRoot));
 		}
 
-		const deep = getDescendantShadows(child);
+		const deep = getDescendantShadowChildren(child);
 		if (deep && deep.length) {
 			shadows.push.apply(shadows, deep);
 		}
@@ -181,5 +181,5 @@ export {
 	getNextSegment,
 	getChildNodes,
 	findSpecial,
-	getDescendantShadows,
+	getDescendantShadowChildren,
 };

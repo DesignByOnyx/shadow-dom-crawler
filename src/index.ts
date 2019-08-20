@@ -5,7 +5,7 @@ import {
 	getNextSegment,
 	getChildNodes,
 	findSpecial,
-	getDescendantShadows,
+	getDescendantShadowChildren,
 } from './util';
 
 const slice = Array.prototype.slice;
@@ -67,7 +67,7 @@ function findFirstMatch(selector: string, start: Node[]) {
 				found = el.matches(selector) ? el : el.querySelector(selector);
 
 				if (!found) {
-					found = findNode(selector, el.shadowRoot ? getChildNodes(el) : getDescendantShadows(el));
+					found = findNode(selector, el.shadowRoot ? getChildNodes(el) : getDescendantShadowChildren(el));
 				}
 			}
 		}
